@@ -1,0 +1,2 @@
+<!--pages/suitecrm/suitecrm.wxml-->
+<web-view src="https://suitecrm.taihumeiren.com"></web-view>

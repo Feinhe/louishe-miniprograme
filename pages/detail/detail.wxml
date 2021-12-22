@@ -1,0 +1,146 @@
+<!--/*
+ * 
+ * 微慕小程序开源版
+ * author: jianbo
+ * organization: 微慕  www.minapper.com
+ * github:    https://github.com/iamxjb/winxin-app-watch-life.net
+ * 技术支持微信号：iamxjb
+ * 开源协议：MIT
+ *Copyright (c) 2017 https://www.minapper.com All rights reserved.
+ * 
+ */-->
+
+<import src="../../templates/copyright.wxml" />
+<import src="../../templates/loading.wxml" />
+<import src="../../templates/modal-view/modal-view.wxml" />
+<import src="../../templates/login-popup.wxml" />
+
+
+
+<view>
+<!-- 小程序广告 -->
+      <view class="ad-box" wx:if="{{detail.detailAdId !='' && detail.detailAd=='1' && detailTopAdsuccess}}">
+        <ad unit-id="{{detail.detailAdId}}" ad-intervals="30" ad-type="video" binderror="adTopbinderror"></ad>
+      </view>
+
+  <!-- 文章 -->
+  <view class="detail-content" style="display:{{display}}">
+    <!-- 标题 -->
+    <view class="entry-title">{{detail.title.rendered}}</view>
+    <!-- 文章互动数据 -->
+    <view class="entry-data">
+      <image src="../../images/calendar.png"></image>
+      <text>{{detailDate}}</text>
+      <image src="../../images/comments.png"></image>
+      <text>{{total_comments}}</text>
+      <image src="../../images/pageviews.png"></image>
+      <text>{{detail.pageviews}}</text>
+      <image src="../../images/home-like.png"></image>
+      <text>{{likeCount}}</text>
+    </view>
+    <!-- 文章正文 -->
+    <view class="entry-summary" id="entry-summary" style="height:{{detailSummaryHeight}}">       
+
+     <mp-html content="{{ detail.content.rendered }}" bindlinktap="wxParseTagATap" copy-link="{{false}}" selectable="{{true}}" lazy-load="{{true}}" markdown="{{true}}" />
+      <!-- 阅读更多 -->
+        <view class="detail-read-more" wx:if="{{detailSummaryHeight != ''}}">
+          <view class="detail-readmore-mask">
+            <view class="detail-readmore-btn" bindtap="readMore">观看视频，阅读更多...</view>
+          </view>
+        </view>
+
+    </view>
+
+    
+
+
+    <!--  上下文  -->
+    <view wx:if="{{detail.previous_post_id || detail.next_post_id}}" class="up-down-post">
+      <!-- 上一篇 -->
+      <view wx:if="{{detail.previous_post_id}}" class="up-post">
+        <navigator url="../detail/detail?id={{detail.previous_post_id}}" open-type="redirect" hover-class="relatedNavigator">上一篇：{{detail.previous_post_title}}</navigator>
+      </view>
+      <!-- 下一篇 -->
+      <view wx:if="{{detail.next_post_id}}" class="up-post">
+        <navigator url="../detail/detail?id={{detail.next_post_id}}" open-type="redirect" hover-class="relatedNavigator">下一篇：{{detail.next_post_title}}</navigator>
+      </view>
+      <view class="clearfix"></view>
+    </view>
+
+    <!-- 小程序广告 -->
+    <view class="ad-box-video" wx:if="{{detail.videoAdId !='' && detail.detailAd=='1' && detailAdsuccess}}">
+      <ad unit-id="{{detail.videoAdId}}" ad-intervals="30" ad-type="video" binderror="adbinderror"></ad>
+    </view>
+     
+
+    <!-- 猜你喜欢 -->
+    <view wx:if="{{postList.length != 0}}" class="relatedPost" style="display:{{display}}">
+      <view class="subTitle">猜你喜欢</view>
+      <view class="subTitle_line"></view>
+      <block wx:key="id" wx:for="{{postList}}">
+        <navigator url="../detail/detail?id={{item.id}}" open-type="redirect" hover-class="relatedNavigator">
+          <view class="relatedText">{{index+1}}. {{item.title.rendered}}</view>
+        </navigator>
+      </block>
+    </view>
+
+    <modal title="{{dialog.title}}" hidden="{{dialog.hidden}}" no-cancel bindconfirm="confirm">{{dialog.content}}</modal>
+  </view>
+  <template is="modalView" data="{{...__modalView__}}" />
+
+  <poster id="poster" hide-loading="{{false}}" preload="{{false}}" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail">
+  </poster>
+  <view class="ditail-copyright" style="display:{{display}}">
+    <template is="tempCopyright" data="{{webSiteName:webSiteName,domain:domain}}"/>
+  </view>
+
+  <template is="login-popup" data="{{show: isLoginPopup, userInfo: userInfo}}"></template>
+
+  <!--评论区-->
+  <view style="display:{{enableComment?'block':'none'}}">
+    <view class="menuBackground" catchtap="hiddenMenubox" style="display:{{menuBackgroup ? 'block' : 'none'}}"></view>
+    <view style="display:{{display}}">
+
+      <view class="comment-fixed">
+
+
+            <!--功能图标-->
+            <view class="menu-box {{isShow ? 'emoji-move-in' : 'emoji-move-out'}} {{isLoad ? 'no-emoji-move' : ''}}">
+              <view class="iconList">
+                <view class="iconLine">
+                  <view style="width:50%; position: relative; float:left; text-align:center">
+                    <view>
+                      <image src="../../images/forwarding.png" class="img-menu"></image>
+                    </view>
+                    <view>
+                      <text>转发</text>
+                    </view>
+                    <button class="share-button share-button touch-active" open-type="share">
+                    </button>
+                  </view>
+                  
+                  <view style="width:50%; float:left; text-align:center">
+                    <view>
+                      <image src="../../images/copy.png" class="img-menu" catchtap="gotowebpage"></image>
+                    </view>
+                    <view>
+                      <text>阅读原文</text>
+                    </view>
+                  </view>
+
+                </view>
+              </view>
+            </view>
+
+      </view>
+
+    </view>
+  </view>
+
+  <!-- 无法访问网络时 -->
+  <view class="showerror" style="display:{{showerror}}">
+    <image src="../../images/cry80.png" style="height:100rpx;width:100rpx"></image>
+    <view class="errortext">{{errMessage}}</view>
+  </view>
+
+</view>
