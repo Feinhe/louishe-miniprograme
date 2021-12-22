@@ -449,7 +449,7 @@
   text-align: center;
   color: #999;
   margin-top: 20rpx;
-  margin-bottom: 160rpx;
+  margin-bottom: 60rpx;
 }
 
 .wxParse-a {

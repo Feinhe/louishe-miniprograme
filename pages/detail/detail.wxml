@@ -96,46 +96,6 @@
 
   <template is="login-popup" data="{{show: isLoginPopup, userInfo: userInfo}}"></template>
 
-  <!--评论区-->
-  <view style="display:{{enableComment?'block':'none'}}">
-    <view class="menuBackground" catchtap="hiddenMenubox" style="display:{{menuBackgroup ? 'block' : 'none'}}"></view>
-    <view style="display:{{display}}">
-
-      <view class="comment-fixed">
-
-
-            <!--功能图标-->
-            <view class="menu-box {{isShow ? 'emoji-move-in' : 'emoji-move-out'}} {{isLoad ? 'no-emoji-move' : ''}}">
-              <view class="iconList">
-                <view class="iconLine">
-                  <view style="width:50%; position: relative; float:left; text-align:center">
-                    <view>
-                      <image src="../../images/forwarding.png" class="img-menu"></image>
-                    </view>
-                    <view>
-                      <text>转发</text>
-                    </view>
-                    <button class="share-button share-button touch-active" open-type="share">
-                    </button>
-                  </view>
-                  
-                  <view style="width:50%; float:left; text-align:center">
-                    <view>
-                      <image src="../../images/copy.png" class="img-menu" catchtap="gotowebpage"></image>
-                    </view>
-                    <view>
-                      <text>阅读原文</text>
-                    </view>
-                  </view>
-
-                </view>
-              </view>
-            </view>
-
-      </view>
-
-    </view>
-  </view>
 
   <!-- 无法访问网络时 -->
   <view class="showerror" style="display:{{showerror}}">
